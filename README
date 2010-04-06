@@ -1,0 +1,36 @@
+NAME
+
+      Char - Character Oriented Perl by Magic Comment
+
+SYNOPSIS
+
+   # encoding: sjis
+   use Char;
+
+   functions:
+     Char::ord(...);
+     Char::reverse(...);
+     Char::length(...);
+     Char::substr(...);
+     Char::index(...);
+     Char::rindex(...);
+
+   # "no Char;" not supported
+
+ABSTRACT
+
+   The computer cannot treat the character directly.
+
+   Therefore, the computer treats the character by allotting the numerical value
+   to each character, and treating the numerical value.
+
+   By the way, whose work is allotting?
+
+   Since perl5.8, it is human's work.
+
+   The overall performance has decreased because of a part of parts though the
+   performance of the computer improved rapidly.
+
+   We can remove the element of a low performance with this software.
+
+   Shall we remov
