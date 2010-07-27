@@ -1,6 +1,7 @@
 Char.pm
 Changes
 Makefile.PL
+pMakefile.PL
 MANIFEST
 test.pl
 README

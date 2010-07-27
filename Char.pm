@@ -11,7 +11,8 @@ package Char;
 
 use 5.00503;
 
-$VERSION = sprintf '%d.%02d', q$Revision: 0.01 $ =~ m/(\d+)/oxmsg;
+BEGIN { eval q{ use vars qw($VERSION) } }
+$VERSION = sprintf '%d.%02d', q$Revision: 0.02 $ =~ m/(\d+)/oxmsg;
 BEGIN { eval { require strict; 'strict'->import; } }
 
 sub LOCK_SH() {1}
@@ -179,11 +180,12 @@ sub encoding {
     big5et              Big5Plus
     big5eten            Big5Plus
     tcabig5             Big5Plus
-    big5hk              Big5Plus
-    big5hkscs           Big5Plus
-    hkbig5              Big5Plus
-    hkscsbig5           Big5Plus
     cp950               Big5Plus
+
+    big5hk              Big5HKSCS
+    big5hkscs           Big5HKSCS
+    hkbig5              Big5HKSCS
+    hkscsbig5           Big5HKSCS
 
     latin1              Latin1
     isoiec88591         Latin1
@@ -238,18 +240,26 @@ Char - Character Oriented Perl by Magic Comment
 To using this software, you must get filter software of 'Yet Another JPerl family'.
 See also following 'SEE ALSO'.
 
-=head1 INSTALLATION
+INSTALLATION BY MAKE (for UNIX)
 
-To install this software, type the following:
+To install this software by make, type the following:
 
-perl Makefile.PL    --- Makefile.PL makes "make.bat" only, and ...
-make.bat install
-make.bat test
+   perl Makefile.PL
+   make
+   make test
+   make install
 
-=head1 MAKE OTHER
+INSTALLATION WITHOUT MAKE (for DOS like system)
 
-make.bat dist       --- make distribution package
-make.bat tar.bat    --- make perl script "tar.bat"
+To install this software without make, type the following:
+
+   perl pMakefile.PL    --- pMakefile.PL makes "pmake.bat" only, and ...
+   pmake.bat
+   pmake.bat test
+   pmake.bat install    --- install to current using Perl
+
+   pmake.bat dist       --- make distribution package
+   pmake.bat ptar.bat   --- make perl script "ptar.bat"
 
 =head1 DEPENDENCIES
 
@@ -340,11 +350,11 @@ die if there is no filter software.
   big5et              Big5Plus
   big5eten            Big5Plus
   tcabig5             Big5Plus
-  big5hk              Big5Plus
-  big5hkscs           Big5Plus
-  hkbig5              Big5Plus
-  hkscsbig5           Big5Plus
   cp950               Big5Plus
+  big5hk              Big5HKSCS
+  big5hkscs           Big5HKSCS
+  hkbig5              Big5HKSCS
+  hkscsbig5           Big5HKSCS
   latin1              Latin1
   isoiec88591         Latin1
   iso88591            Latin1
@@ -367,7 +377,7 @@ die if there is no filter software.
   This function returns the numeric value (ASCII or Multibyte Character) of the
   first character of $string. The return value is always unsigned.
 
-=item Reverse list or string
+=item Reverse List or String
 
   @reverse = reverse(@list);
   $reverse = reverse(@list);
@@ -394,7 +404,7 @@ die if there is no filter software.
   In scalar context, the function concatenates all the elements of LIST and then
   returns the reverse of that resulting string, character by character.
 
-=item length by character
+=item Length by Character
 
   $length = Char::length($string);
   $length = Char::length();
@@ -414,7 +424,7 @@ die if there is no filter software.
 
   $blen = CORE::length($string);
 
-=item substr by character
+=item Substr by Character
 
   $substr = Char::substr($string,$offset,$length,$replacement);
   $substr = Char::substr($string,$offset,$length);
@@ -455,7 +465,7 @@ die if there is no filter software.
 
   Char::substr($var, -1, 1, "Curly");
 
-=item index by character
+=item Index by Character
 
   $index = Char::index($string,$substring,$offset);
   $index = Char::index($string,$substring);
@@ -472,7 +482,7 @@ die if there is no filter software.
       $pos++;
   }
 
-=item rindex by character
+=item Rindex by Character
 
   $rindex = Char::rindex($string,$substring,$position);
   $rindex = Char::rindex($string,$substring);
