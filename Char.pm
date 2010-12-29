@@ -12,13 +12,17 @@ package Char;
 use 5.00503;
 
 BEGIN { eval q{ use vars qw($VERSION) } }
-$VERSION = sprintf '%d.%02d', q$Revision: 0.02 $ =~ m/(\d+)/oxmsg;
+$VERSION = sprintf '%d.%02d', q$Revision: 0.03 $ =~ m/(\d+)/oxmsg;
 BEGIN { eval { require strict; 'strict'->import; } }
 
-sub LOCK_SH() {1}
-sub LOCK_EX() {2}
-sub LOCK_UN() {8}
-sub LOCK_NB() {4}
+unless (eval q{ use Fcntl qw(:flock); 1 }) {
+    eval q{
+        sub LOCK_SH {1}
+        sub LOCK_EX {2}
+        sub LOCK_UN {8}
+        sub LOCK_NB {4}
+    };
+}
 
 local $^W = 1;
 $| = 1;
@@ -35,7 +39,7 @@ if (my $encoding = encoding($filename)) {
     # get filter software path
     my $filter = abspath($encoding);
     unless ($filter) {
-        die "$__FILE__: filter software '\U$encoding\E.pm' not found in \@INC(@INC)\n";
+        die "$__FILE__: filter software '$encoding.pm' not found in \@INC(@INC)\n";
     }
 
     # when escaped script not exists or older
@@ -43,9 +47,18 @@ if (my $encoding = encoding($filename)) {
     my $mtime   = (stat($filename))[9];
     if ((not -e "$filename.e") or ($e_mtime < $mtime)) {
         open(FILE1, "+>>$filename")   or die "$__FILE__: Can't read-write open file: $filename\n";
-        eval q{ flock(FILE1, LOCK_EX) };
-        open(FILE2, ">$filename.tmp") or die "$__FILE__: Can't write open file: $filename.tmp\n";
+        if ($^O eq 'MacOS') {
+            eval q{
+                require Mac::Files;
+                Mac::Files::FSpSetFLock($filename);
+            };
+        }
+        else {
+            eval q{ flock(FILE1, LOCK_EX) };
+        }
 
+        # rewrite 'Char::' to any encoding
+        open(FILE2, ">$filename.tmp") or die "$__FILE__: Can't write open file: $filename.tmp\n";
         while (<FILE1>) {
             s/^\s*use\s+Char\s*;\s*$//g;
             s/(?!<::)\b(ord|reverse)\b/'Char::'.$1/ge;
@@ -54,49 +67,85 @@ if (my $encoding = encoding($filename)) {
         }
         close(FILE2) or die "$__FILE__: Can't close file: $filename.tmp\n";
 
+        # escape perl script
         my @system  = ();
         my $escaped = '';
         if ($^O =~ m/\A (?: MSWin32 | NetWare | symbian | dos ) \z/oxms) {
-            @system    = map {m/[ ]/oxms ? qq{"$_"} : $_} $^X, $filter, "$filename.tmp";
-            ($escaped) = map {m/[ ]/oxms ? qq{"$_"} : $_} "$filename.e";
+            @system    = map {m/[ ]/oxms ? qq{"$_"} : $_}  $^X, $filter, "$filename.tmp";
+            ($escaped) = map {m/[ ]/oxms ? qq{"$_"} : $_}  "$filename.e";
+        }
+        elsif ($^O eq 'MacOS') {
+            @system    = map { _escapeshellcmd_MacOS($_) } $^X, $filter, "$filename.tmp";
+            ($escaped) = map { _escapeshellcmd_MacOS($_) } "$filename.e";
         }
         else {
-            @system    = map { escapeshellcmd($_) }       $^X, $filter, "$filename.tmp";
-            ($escaped) = map { escapeshellcmd($_) }       "$filename.e";
+            @system    = map { _escapeshellcmd($_) }       $^X, $filter, "$filename.tmp";
+            ($escaped) = map { _escapeshellcmd($_) }       "$filename.e";
         }
-        system join ' ', @system, '>', $escaped;
-        unlink "$filename.tmp";
+        if (system(join ' ', @system, '>', $escaped) == 0) {
+            unlink "$filename.tmp";
+        }
 
+        # inherit file mode
         my $mode = (stat($filename))[2] & 0777;
         chmod $mode, "$filename.e";
 
         # close file and unlock
+        if ($^O eq 'MacOS') {
+            eval q{
+                require Mac::Files;
+                Mac::Files::FSpRstFLock($filename);
+            };
+        }
         close(FILE1) or die "$__FILE__: Can't close file: $filename\n";
     }
 
-    open(FILE1, $filename) or die "$__FILE__: Can't read open file: $filename\n";
-    eval q{ flock(FILE1, LOCK_SH) };
-
     # execute escaped script
-    my $rc;
+    my $system;
     local @ENV{qw(IFS CDPATH ENV BASH_ENV)};
     if ($^O =~ m/\A (?: MSWin32 | NetWare | symbian | dos ) \z/oxms) {
-        $rc = system map {m/[ ]/oxms ? qq{"$_"} : $_} $^X, "$filename.e", @ARGV;
+        open(FILE1, $filename) or die "$__FILE__: Can't read open file: $filename\n";
+        eval q{ flock(FILE1, LOCK_SH) };
+        $system = system map {m/[ ]/oxms ? qq{"$_"} : $_} $^X, "$filename.e", @ARGV;
+        close(FILE1) or die "$__FILE__: Can't close file: $filename\n";
+    }
+    elsif ($^O eq 'MacOS') {
+        eval q{
+            require Mac::Files;
+            Mac::Files::FSpSetFLock($filename);
+        };
+        $system = system map { _escapeshellcmd_MacOS($_) } $^X, "$filename.e", @ARGV;
+        eval q{
+            require Mac::Files;
+            Mac::Files::FSpRstFLock($filename);
+        };
     }
     else {
-        $rc = system map { escapeshellcmd($_) }       $^X, "$filename.e", @ARGV;
+        open(FILE1, $filename) or die "$__FILE__: Can't read open file: $filename\n";
+        eval q{ flock(FILE1, LOCK_SH) };
+        $system = system map { _escapeshellcmd($_) } $^X, "$filename.e", @ARGV;
+        close(FILE1) or die "$__FILE__: Can't close file: $filename\n";
     }
 
-    # close file and unlock
-    close(FILE1) or die "$__FILE__: Can't close file: $filename\n";
-
-    exit $rc;
+    exit $system;
 }
 
-# escape shell command line
-sub escapeshellcmd {
+# when no magic comment
+else {
+    warn "$__FILE__: no magic comment.\n";
+}
+
+# escape shell command line on Mac OS
+sub _escapeshellcmd_MacOS {
     my($word) = @_;
-    $word =~ s/([\t\n\r\x20!"#$%&'()*+;<=>?\[\\\]^`{|}~\x7F\xFF])/\\$1/g;
+    $word =~ s/(["`{\xB6])/\xB6$1/g;
+    return qq{"$word"};
+}
+
+# escape shell command line on UNIX-like system
+sub _escapeshellcmd {
+    my($word) = @_;
+    $word =~ s/([\t\n\r\x20!"#\$%&'()*+;<=>?\[\\\]^`{|}~\x7F\xFF])/\\$1/g;
     return $word;
 }
 
@@ -162,10 +211,10 @@ sub encoding {
     informixv6als       INFORMIXV6ALS
 
     gb18030             GB18030
-    gbk                 GB18030
-    gb2312              GB18030
-    cp936               GB18030
-    euccn               GB18030
+    gbk                 GBK
+    gb2312              GBK
+    cp936               GBK
+    euccn               GBK
 
     uhc                 UHC
     ksx1001             UHC
@@ -199,8 +248,15 @@ sub encoding {
 sub abspath {
     my($encoding) = @_;
     for my $path (@INC) {
-        if (-e "$path/$encoding.pm") {
-            return "$path/$encoding.pm";
+        if ($^O eq 'MacOS') {
+            if (-e "$path$encoding.pm") {
+                return "$path$encoding.pm";
+            }
+        }
+        else {
+            if (-e "$path/$encoding.pm") {
+                return "$path/$encoding.pm";
+            }
         }
     }
     return '';
@@ -240,7 +296,7 @@ Char - Character Oriented Perl by Magic Comment
 To using this software, you must get filter software of 'Yet Another JPerl family'.
 See also following 'SEE ALSO'.
 
-INSTALLATION BY MAKE (for UNIX)
+INSTALLATION BY MAKE (for UNIX-like system)
 
 To install this software by make, type the following:
 
@@ -249,7 +305,7 @@ To install this software by make, type the following:
    make test
    make install
 
-INSTALLATION WITHOUT MAKE (for DOS like system)
+INSTALLATION WITHOUT MAKE (for DOS-like system)
 
 To install this software without make, type the following:
 
@@ -334,10 +390,10 @@ die if there is no filter software.
   hp15                HP15
   informixv6als       INFORMIXV6ALS
   gb18030             GB18030
-  gbk                 GB18030
-  gb2312              GB18030
-  cp936               GB18030
-  euccn               GB18030
+  gbk                 GBK
+  gb2312              GBK
+  cp936               GBK
+  euccn               GBK
   uhc                 UHC
   ksx1001             UHC
   ksc5601             UHC
@@ -518,9 +574,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 =head1 SEE ALSO
 
  Yet Another JPerl family
+ http://search.cpan.org/dist/Big5HKSCS/
  http://search.cpan.org/dist/Big5Plus/
  http://search.cpan.org/dist/EUCJP/
  http://search.cpan.org/dist/GB18030/
+ http://search.cpan.org/dist/GBK/
  http://search.cpan.org/dist/HP15/
  http://search.cpan.org/dist/INFORMIXV6ALS/
  http://search.cpan.org/dist/Latin1/

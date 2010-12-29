@@ -8,6 +8,7 @@
 
 BEGIN { $| = 1; print "1..1\n"; }
 
+# encoding: sjis
 use Char;
 
 print "ok 1\n";

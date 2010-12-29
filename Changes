@@ -1,9 +1,14 @@
 Revision history for this software.
 
+0.03  2010/12/29 00:00:00
+	- support MacOS.
+	- support GBK.
+	; created by INABA Hitoshi
+
 0.02  2010/07/28 00:00:00
 	- support Big5HKSCS.
-	- rename Makefile.PL to pMakefile.PL(Poor Makefile.PL) for DOS like system.
-	- standard Makefile.PL for UNIX.
+	- rename Makefile.PL to pMakefile.PL(Poor Makefile.PL) for DOS-like system.
+	- standard Makefile.PL for UNIX-like system.
 	; created by INABA Hitoshi
 
 0.01  2010/04/07 00:00:00
