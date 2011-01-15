@@ -1,7 +1,7 @@
 --- #YAML:1.0
 name: Char
 abstract: Character Oriented Perl by Magic Comment
-version: 0.03
+version: 0.04
 author:
   - INABA Hitoshi <ina@cpan.org>
 license: perl
@@ -14,7 +14,6 @@ requires:
   File::Path: 1.0401
   Test: 1.122
   Test::Harness: 1.1602
-  Sjis: 0.70
   perl: 5.005_03
 build_requires:
   Test: 1.122

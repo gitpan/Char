@@ -5,14 +5,14 @@ package Char;
 #
 #                  http://search.cpan.org/dist/Char/
 #
-# Copyright (c) 2010 INABA Hitoshi <ina@cpan.org>
+# Copyright (c) 2010, 2011 INABA Hitoshi <ina@cpan.org>
 #
 ######################################################################
 
 use 5.00503;
 
 BEGIN { eval q{ use vars qw($VERSION) } }
-$VERSION = sprintf '%d.%02d', q$Revision: 0.03 $ =~ m/(\d+)/oxmsg;
+$VERSION = sprintf '%d.%02d', q$Revision: 0.04 $ =~ m/(\d+)/oxmsg;
 BEGIN { eval { require strict; 'strict'->import; } }
 
 unless (eval q{ use Fcntl qw(:flock); 1 }) {
