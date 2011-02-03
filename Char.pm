@@ -12,17 +12,13 @@ package Char;
 use 5.00503;
 
 BEGIN { eval q{ use vars qw($VERSION) } }
-$VERSION = sprintf '%d.%02d', q$Revision: 0.04 $ =~ m/(\d+)/oxmsg;
+$VERSION = sprintf '%d.%02d', q$Revision: 0.05 $ =~ m/(\d+)/oxmsg;
 BEGIN { eval { require strict; 'strict'->import; } }
 
-unless (eval q{ use Fcntl qw(:flock); 1 }) {
-    eval q{
-        sub LOCK_SH {1}
-        sub LOCK_EX {2}
-        sub LOCK_UN {8}
-        sub LOCK_NB {4}
-    };
-}
+sub LOCK_SH() {1}
+sub LOCK_EX() {2}
+sub LOCK_UN() {8}
+sub LOCK_NB() {4}
 
 local $^W = 1;
 $| = 1;
@@ -293,7 +289,7 @@ Char - Character Oriented Perl by Magic Comment
 
 =head1 OTHER SOFTWARE
 
-To using this software, you must get filter software of 'Yet Another JPerl family'.
+To using this software, you must get filter software of 'Sjis software family'.
 See also following 'SEE ALSO'.
 
 INSTALLATION BY MAKE (for UNIX-like system)
@@ -573,7 +569,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 =head1 SEE ALSO
 
- Yet Another JPerl family
+ Sjis software family
  http://search.cpan.org/dist/Big5HKSCS/
  http://search.cpan.org/dist/Big5Plus/
  http://search.cpan.org/dist/EUCJP/
@@ -586,6 +582,12 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  http://search.cpan.org/dist/Sjis/
  http://search.cpan.org/dist/UHC/
  http://search.cpan.org/dist/UTF2/
+
+ Other Tools
+ http://search.cpan.org/dist/jacode/
+
+ BackPAN
+ http://backpan.perl.org/authors/id/I/IN/INA/
 
 =head1 ACKNOWLEDGEMENTS
 
