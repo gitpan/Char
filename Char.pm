@@ -12,7 +12,7 @@ package Char;
 use 5.00503;
 
 BEGIN { eval q{ use vars qw($VERSION) } }
-$VERSION = sprintf '%d.%02d', q$Revision: 0.05 $ =~ m/(\d+)/oxmsg;
+$VERSION = sprintf '%d.%02d', q$Revision: 0.06 $ =~ m/(\d+)/oxmsg;
 BEGIN { eval { require strict; 'strict'->import; } }
 
 sub LOCK_SH() {1}
@@ -237,6 +237,61 @@ sub encoding {
     iso88591            Latin1
     iec88591            Latin1
 
+    latin2              Latin2
+    isoiec88592         Latin2
+    iso88592            Latin2
+    iec88592            Latin2
+
+    latin3              Latin3
+    isoiec88593         Latin3
+    iso88593            Latin3
+    iec88593            Latin3
+
+    latin4              Latin4
+    isoiec88594         Latin4
+    iso88594            Latin4
+    iec88594            Latin4
+
+    Cyrillic            Cyrillic
+    isoiec88595         Cyrillic
+    iso88595            Cyrillic
+    iec88595            Cyrillic
+
+    Greek               Greek
+    isoiec88597         Greek
+    iso88597            Greek
+    iec88597            Greek
+
+    latin5              Latin5
+    isoiec88599         Latin5
+    iso88599            Latin5
+    iec88599            Latin5
+
+    latin6              Latin6
+    isoiec885910        Latin6
+    iso885910           Latin6
+    iec885910           Latin6
+
+    latin7              Latin7
+    isoiec885913        Latin7
+    iso885913           Latin7
+    iec885913           Latin7
+
+    latin8              Latin8
+    isoiec885914        Latin8
+    iso885914           Latin8
+    iec885914           Latin8
+
+    latin9              Latin9
+    isoiec885915        Latin9
+    iso885915           Latin9
+    iec885915           Latin9
+
+    latin10             Latin10
+    isoiec885916        Latin10
+    iso885916           Latin10
+    iec885916           Latin10
+
     )}->{$encoding} || $encoding;
 }
 
@@ -411,11 +466,57 @@ die if there is no filter software.
   isoiec88591         Latin1
   iso88591            Latin1
   iec88591            Latin1
+  latin2              Latin2
+  isoiec88592         Latin2
+  iso88592            Latin2
+  iec88592            Latin2
+  latin3              Latin3
+  isoiec88593         Latin3
+  iso88593            Latin3
+  iec88593            Latin3
+  latin4              Latin4
+  isoiec88594         Latin4
+  iso88594            Latin4
+  iec88594            Latin4
+  Cyrillic            Cyrillic
+  isoiec88595         Cyrillic
+  iso88595            Cyrillic
+  iec88595            Cyrillic
+  Greek               Greek
+  isoiec88597         Greek
+  iso88597            Greek
+  iec88597            Greek
+  latin5              Latin5
+  isoiec88599         Latin5
+  iso88599            Latin5
+  iec88599            Latin5
+  latin6              Latin6
+  isoiec885910        Latin6
+  iso885910           Latin6
+  iec885910           Latin6
+  latin7              Latin7
+  isoiec885913        Latin7
+  iso885913           Latin7
+  iec885913           Latin7
+  latin8              Latin8
+  isoiec885914        Latin8
+  iso885914           Latin8
+  iec885914           Latin8
+  latin9              Latin9
+  isoiec885915        Latin9
+  iso885915           Latin9
+  iec885915           Latin9
+  latin10             Latin10
+  isoiec885916        Latin10
+  iso885916           Latin10
+  iec885916           Latin10
   -----------------------------------
 
 =head1 CHARACTER ORIENTED FUNCTIONS
 
-=item Order of Character
+=over 2
+
+=item * Order of Character
 
   $ord = ord($string);
 
@@ -429,7 +530,7 @@ die if there is no filter software.
   This function returns the numeric value (ASCII or Multibyte Character) of the
   first character of $string. The return value is always unsigned.
 
-=item Reverse List or String
+=item * Reverse List or String
 
   @reverse = reverse(@list);
   $reverse = reverse(@list);
@@ -456,7 +557,7 @@ die if there is no filter software.
   In scalar context, the function concatenates all the elements of LIST and then
   returns the reverse of that resulting string, character by character.
 
-=item Length by Character
+=item * Length by Character
 
   $length = Char::length($string);
   $length = Char::length();
@@ -476,7 +577,7 @@ die if there is no filter software.
 
   $blen = CORE::length($string);
 
-=item Substr by Character
+=item * Substr by Character
 
   $substr = Char::substr($string,$offset,$length,$replacement);
   $substr = Char::substr($string,$offset,$length);
@@ -517,7 +618,7 @@ die if there is no filter software.
 
   Char::substr($var, -1, 1, "Curly");
 
-=item Index by Character
+=item * Index by Character
 
   $index = Char::index($string,$substring,$offset);
   $index = Char::index($string,$substring);
@@ -534,7 +635,7 @@ die if there is no filter software.
       $pos++;
   }
 
-=item Rindex by Character
+=item * Rindex by Character
 
   $rindex = Char::rindex($string,$substring,$position);
   $rindex = Char::rindex($string,$substring);
@@ -568,20 +669,6 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 =head1 SEE ALSO
-
- Sjis software family
- http://search.cpan.org/dist/Big5HKSCS/
- http://search.cpan.org/dist/Big5Plus/
- http://search.cpan.org/dist/EUCJP/
- http://search.cpan.org/dist/GB18030/
- http://search.cpan.org/dist/GBK/
- http://search.cpan.org/dist/HP15/
- http://search.cpan.org/dist/INFORMIXV6ALS/
- http://search.cpan.org/dist/Latin1/
- http://search.cpan.org/dist/OldUTF8/
- http://search.cpan.org/dist/Sjis/
- http://search.cpan.org/dist/UHC/
- http://search.cpan.org/dist/UTF2/
 
  Other Tools
  http://search.cpan.org/dist/jacode/

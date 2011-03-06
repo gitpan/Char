@@ -1,5 +1,10 @@
 Revision history for this software.
 
+0.06  2011/03/05 00:00:00
+	- support Latin-2, Latin-3, Latin-4, Latin-5, Latin-6, Latin-7, Latin-8, Latin-9.
+	- support Cyrillic, Greek.
+	; created by INABA Hitoshi
+
 0.05  2011/02/03 00:00:00
 	- remove Fcntl module.
 	; created by INABA Hitoshi
