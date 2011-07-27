@@ -1,5 +1,9 @@
 Revision history for this software.
 
+0.07  2011/07/28 00:00:00
+	- support Windows-1252, KOI8-R, KOI8-U, US-ASCII.
+	; created by INABA Hitoshi
+
 0.06  2011/03/05 00:00:00
 	- support Latin-2, Latin-3, Latin-4, Latin-5, Latin-6, Latin-7, Latin-8, Latin-9.
 	- support Cyrillic, Greek.

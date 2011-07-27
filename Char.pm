@@ -3,8 +3,6 @@ package Char;
 #
 # Char - Character Oriented Perl by Magic Comment
 #
-#                  http://search.cpan.org/dist/Char/
-#
 # Copyright (c) 2010, 2011 INABA Hitoshi <ina@cpan.org>
 #
 ######################################################################
@@ -12,7 +10,7 @@ package Char;
 use 5.00503;
 
 BEGIN { eval q{ use vars qw($VERSION) } }
-$VERSION = sprintf '%d.%02d', q$Revision: 0.06 $ =~ m/(\d+)/oxmsg;
+$VERSION = sprintf '%d.%02d', q$Revision: 0.07 $ =~ m/(\d+)/oxmsg;
 BEGIN { eval { require strict; 'strict'->import; } }
 
 sub LOCK_SH() {1}
@@ -169,6 +167,9 @@ sub encoding {
     $encoding =~ tr/a-z0-9//cd;
     return { qw(
 
+    ascii               USASCII
+    usascii             USASCII
+
     shiftjis            Sjis
     shiftjisx0213       Sjis
     shiftjis2004        Sjis
@@ -252,12 +253,15 @@ sub encoding {
     iso88594            Latin4
     iec88594            Latin4
 
-    Cyrillic            Cyrillic
+    cyrillic            Cyrillic
     isoiec88595         Cyrillic
     iso88595            Cyrillic
     iec88595            Cyrillic
 
-    Greek               Greek
+    koi8r               KOI8R
+    koi8u               KOI8U
+
+    greek               Greek
     isoiec88597         Greek
     iso88597            Greek
     iec88597            Greek
@@ -291,6 +295,8 @@ sub encoding {
     isoiec885916        Latin10
     iso885916           Latin10
     iec885916           Latin10
+
+    windows1252         Windows1252
 
     )}->{$encoding} || $encoding;
 }
@@ -408,6 +414,8 @@ die if there is no filter software.
   -----------------------------------
   encoding method     filter software
   -----------------------------------
+  ascii               USASCII
+  usascii             USASCII
   shiftjis            Sjis
   shiftjisx0213       Sjis
   shiftjis2004        Sjis
@@ -478,11 +486,13 @@ die if there is no filter software.
   isoiec88594         Latin4
   iso88594            Latin4
   iec88594            Latin4
-  Cyrillic            Cyrillic
+  cyrillic            Cyrillic
   isoiec88595         Cyrillic
   iso88595            Cyrillic
   iec88595            Cyrillic
-  Greek               Greek
+  koi8r               KOI8R
+  koi8u               KOI8U
+  greek               Greek
   isoiec88597         Greek
   iso88597            Greek
   iec88597            Greek
@@ -510,6 +520,7 @@ die if there is no filter software.
   isoiec885916        Latin10
   iso885916           Latin10
   iec885916           Latin10
+  windows1252         Windows1252
   -----------------------------------
 
 =head1 CHARACTER ORIENTED FUNCTIONS
