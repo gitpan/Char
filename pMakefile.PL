@@ -2,9 +2,7 @@
 #
 # pMakefile.pl - Poor Makefile.pl for Sjis software
 #
-#                  http://search.cpan.org/dist/Sjis/
-#
-# Copyright (c) 2008, 2009, 2010 INABA Hitoshi <ina@cpan.org>
+# Copyright (c) 2008, 2009, 2010, 2011 INABA Hitoshi <ina@cpan.org>
 ######################################################################
 
 use strict;
@@ -48,9 +46,7 @@ __END__
 #
 # pmake - Poor make for Sjis software
 #
-#                  http://search.cpan.org/dist/Sjis/
-#
-# Copyright (c) 2008, 2009, 2010 INABA Hitoshi <ina@cpan.org>
+# Copyright (c) 2008, 2009, 2010, 2011 INABA Hitoshi <ina@cpan.org>
 ######################################################################
 
 use strict;
@@ -280,9 +276,7 @@ __END__
 #
 # ptar - Poor tar for Sjis software
 #
-#                  http://search.cpan.org/dist/Sjis/
-#
-# Copyright (c) 2008, 2009, 2010 INABA Hitoshi <ina@cpan.org>
+# Copyright (c) 2008, 2009, 2010, 2011 INABA Hitoshi <ina@cpan.org>
 ######################################################################
 
 use strict;

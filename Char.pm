@@ -10,7 +10,7 @@ package Char;
 use 5.00503;
 
 BEGIN { eval q{ use vars qw($VERSION) } }
-$VERSION = sprintf '%d.%02d', q$Revision: 0.07 $ =~ m/(\d+)/oxmsg;
+$VERSION = sprintf '%d.%02d', q$Revision: 0.08 $ =~ m/(\d+)/oxmsg;
 BEGIN { eval { require strict; 'strict'->import; } }
 
 sub LOCK_SH() {1}
@@ -298,6 +298,8 @@ sub encoding {
 
     windows1252         Windows1252
 
+    windows1258         Windows1258
+
     )}->{$encoding} || $encoding;
 }
 
@@ -521,6 +523,7 @@ die if there is no filter software.
   iso885916           Latin10
   iec885916           Latin10
   windows1252         Windows1252
+  windows1258         Windows1258
   -----------------------------------
 
 =head1 CHARACTER ORIENTED FUNCTIONS
@@ -646,6 +649,15 @@ die if there is no filter software.
       $pos++;
   }
 
+  Three Indexes
+  -------------------------------------------------------------------------
+  Function       Works as    Returns as   Description
+  -------------------------------------------------------------------------
+  index          Character   Byte         JPerl semantics
+  Char::index    Character   Character    Character-oriented semantics
+  CORE::index    Byte        Byte         Byte-oriented semantics
+  -------------------------------------------------------------------------
+
 =item * Rindex by Character
 
   $rindex = Char::rindex($string,$substring,$position);
@@ -661,6 +673,15 @@ die if there is no filter software.
       print "Found at $pos\n";
       $pos--;
   }
+
+  Three Rindexes
+  -------------------------------------------------------------------------
+  Function       Works as    Returns as   Description
+  -------------------------------------------------------------------------
+  rindex         Character   Byte         JPerl semantics
+  Char::rindex   Character   Character    Character-oriented semantics
+  CORE::rindex   Byte        Byte         Byte-oriented semantics
+  -------------------------------------------------------------------------
 
 =back
 
