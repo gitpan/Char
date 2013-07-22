@@ -1,5 +1,20 @@
 Revision history for this software.
 
+0.09  2013/07/22 00:00:00
+	- remove use strict;.
+	- support LANG environment variable and CHCP command.
+	- ord and reverse means CORE::ord and CORE::reverse (incompatible change).
+	- new ver.sion.0 check (match or die).
+	- remove limitation of magic comment's line.
+	- have to use both two-argument and three-argument open().
+	- support Arabic.
+	- support Hebrew.
+	- support JIS8.
+	- support KPS 9566.
+	- support TIS-620.
+	- support Char::getc().
+	; created by INABA Hitoshi
+
 0.08  2011/11/16 00:00:00
 	- support Windows-1258.
 	; created by INABA Hitoshi

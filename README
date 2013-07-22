@@ -10,6 +10,7 @@ SYNOPSIS
    functions:
      Char::ord(...);
      Char::reverse(...);
+     Char::getc(...);
      Char::length(...);
      Char::substr(...);
      Char::index(...);
