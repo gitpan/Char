@@ -1,5 +1,10 @@
 Revision history for this software.
 
+0.10  2013/08/08 00:00:00
+	- getc means CORE::getc, too.
+	- test requires: Char::USASCII: 0.92.
+	; created by INABA Hitoshi
+
 0.09  2013/07/22 00:00:00
 	- remove use strict;.
 	- support LANG environment variable and CHCP command.

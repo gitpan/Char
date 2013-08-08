@@ -10,7 +10,7 @@ package Char;
 use 5.00503;
 
 BEGIN { eval q{ use vars qw($VERSION) } }
-$VERSION = sprintf '%d.%02d', q$Revision: 0.09 $ =~ m/(\d+)/oxmsg;
+$VERSION = sprintf '%d.%02d', q$Revision: 0.10 $ =~ m/(\d+)/oxmsg;
 
 sub LOCK_SH() {1}
 sub LOCK_EX() {2}
@@ -37,7 +37,6 @@ BEGIN { eval q{ use vars qw($OSNAME $LANG) } }
 BEGIN {
     my $genpkg = "Symbol::";
     my $genseq = 0;
-
     sub gensym () {
         my $name = "GEN" . $genseq++;
 
@@ -59,19 +58,8 @@ sub import {
     my $e_mtime = (stat("$filename.e"))[9];
     my $mtime   = (stat($filename))[9];
     if ((not -e "$filename.e") or ($e_mtime < $mtime)) {
-        my $fh1 = gensym();
-        _open_r($fh1, $filename) or die "@{[__FILE__]}: Can't read open file: $filename\n";
-        if ($OSNAME eq 'MacOS') {
-            eval q{
-                require Mac::Files;
-                Mac::Files::FSpSetFLock($filename);
-            };
-        }
-        else {
-            eval q{ flock($fh1, LOCK_EX) };
-        }
 
-        # when magic comment exists
+        # select filter software
         my $encoding = '';
         my $filter = '';
         if ($encoding = (from_magic_comment($filename) || from_chcp_lang())) {
@@ -82,6 +70,19 @@ sub import {
         }
         else {
             warn "@{[__FILE__]}: don't know which encoding.\n";
+        }
+
+        # flock script file
+        my $fh1 = gensym();
+        _open_r($fh1, $filename) or die "@{[__FILE__]}: Can't read open file: $filename\n";
+        if ($OSNAME eq 'MacOS') {
+            eval q{
+                require Mac::Files;
+                Mac::Files::FSpSetFLock($filename);
+            };
+        }
+        else {
+            eval q{ flock($fh1, LOCK_EX) };
         }
 
         # rewrite 'Char::' to any encoding
@@ -230,7 +231,7 @@ sub from_magic_comment {
     _open_r($fh, $filename) or die "@{[__FILE__]}: Can't read open file: $filename\n";
     while (<$fh>) {
         chomp;
-        if (($encoding) = m/coding[:=]\s*(.+)/oxms) {
+        if (($encoding) = m/\A\s*[#].*?coding[:=]\s*(.+)/oxms) {
             last;
         }
     }
