@@ -1,5 +1,9 @@
 Revision history for this software.
 
+0.11  2013/08/10 00:00:00
+	- include USASCII software for CPAN test.
+	; created by INABA Hitoshi
+
 0.10  2013/08/08 00:00:00
 	- getc means CORE::getc, too.
 	- test requires: Char::USASCII: 0.92.

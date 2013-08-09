@@ -6,3 +6,5 @@ MANIFEST
 test.pl
 README
 META.yml
+USASCII.pm
+Eusascii.pm

@@ -10,7 +10,7 @@ package Char;
 use 5.00503;
 
 BEGIN { eval q{ use vars qw($VERSION) } }
-$VERSION = sprintf '%d.%02d', q$Revision: 0.10 $ =~ m/(\d+)/oxmsg;
+$VERSION = sprintf '%d.%02d', q$Revision: 0.11 $ =~ m/(\d+)/oxmsg;
 
 sub LOCK_SH() {1}
 sub LOCK_EX() {2}
