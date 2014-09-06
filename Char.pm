@@ -3,14 +3,14 @@ package Char;
 #
 # Char - Character Oriented Perl by Magic Comment
 #
-# Copyright (c) 2010, 2011, 2013 INABA Hitoshi <ina@cpan.org>
+# Copyright (c) 2010, 2011, 2013, 2014 INABA Hitoshi <ina@cpan.org>
 #
 ######################################################################
 
 use 5.00503;
 
 BEGIN { eval q{ use vars qw($VERSION) } }
-$VERSION = sprintf '%d.%02d', q$Revision: 0.11 $ =~ m/(\d+)/oxmsg;
+$VERSION = sprintf '%d.%02d', q$Revision: 0.12 $ =~ m/(\d+)/oxmsg;
 
 sub LOCK_SH() {1}
 sub LOCK_EX() {2}
@@ -32,7 +32,7 @@ BEGIN { eval q{ use vars qw($OSNAME $LANG) } }
 ($OSNAME, $LANG) = ('aix',     'Ja_JP')       if 0;
 
 #
-# poor Symbol.pm - substitute of real Symbol.pm
+# instead of Symbol.pm
 #
 BEGIN {
     my $genpkg = "Symbol::";
@@ -278,6 +278,8 @@ sub from_magic_comment {
     eucjpwin            EUCJP
     cp51932             EUCJP
 
+    euctw               EUCTW
+
     utf8                UTF2
     utf2                UTF2
     utffss              UTF2
@@ -321,6 +323,7 @@ sub from_magic_comment {
     big5hkscs           Big5HKSCS
     hkbig5              Big5HKSCS
     hkscsbig5           Big5HKSCS
+    cp951               Big5HKSCS
 
     latin1              Latin1
     isoiec88591         Latin1
@@ -450,6 +453,7 @@ sub from_chcp_lang {
           '936' => 'GBK', # gb2312 ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312)
           '949' => 'UHC', # ks_c_5601-1987 ANSI/OEM Korean (Unified Hangul Code)
           '950' => 'Big5Plus', # big5 ANSI/OEM Traditional Chinese (Taiwan; Hong Kong SAR, PRC); Chinese Traditional (Big5)
+          '951' => 'Big5HKSCS', # HKSCS support on top of traditional Chinese Windows
          '1026' => '', # IBM1026 IBM EBCDIC Turkish (Latin 5)
          '1047' => '', # IBM01047 IBM EBCDIC Latin 1/Open System
          '1140' => '', # IBM01140 IBM EBCDIC US-Canada (037 + Euro symbol); IBM EBCDIC (US-Canada-Euro)
@@ -764,7 +768,7 @@ sub from_chcp_lang {
             $encoding = 'GBK';
         }
         elsif ($lang eq 'zh_TW.EUC') {
-            $encoding = 'N/A';
+            $encoding = 'EUCTW';
         }
         elsif (my($codeset) = $lang =~ m/\A [^.]+ \. ([^@]+) /oxms) {
             $encoding = {qw(
@@ -791,7 +795,7 @@ sub from_chcp_lang {
             TIS620       TIS620
             TIS620-2533  TIS620
             UTF-8        UTF2
-            cns11643     N/A
+            cns11643     EUCTW
             eucJP        EUCJP
             gb2312       GBK
 
@@ -835,7 +839,7 @@ sub from_chcp_lang {
             cp1251     N/A
             eucJP      EUCJP
             eucKR      UHC
-            eucTW      N/A
+            eucTW      EUCTW
             gb18030    GB18030
             greek8     N/A
             hebrew8    N/A
@@ -1145,7 +1149,7 @@ sub from_chcp_lang {
         IBM-eucCN    GBK
         IBM-eucJP    EUCJP
         IBM-eucKR    UHC
-        IBM-eucTW    N/A
+        IBM-eucTW    EUCTW
         ISO8859-1    Latin1
         ISO8859-15   Latin9
         ISO8859-2    Latin2
@@ -1408,6 +1412,7 @@ die if there is no filter software.
   eucjpms             EUCJP
   eucjpwin            EUCJP
   cp51932             EUCJP
+  euctw               EUCTW
   utf8                UTF2
   utf2                UTF2
   utffss              UTF2
@@ -1444,6 +1449,7 @@ die if there is no filter software.
   big5hkscs           Big5HKSCS
   hkbig5              Big5HKSCS
   hkscsbig5           Big5HKSCS
+  cp951               Big5HKSCS
   latin1              Latin1
   isoiec88591         Latin1
   iso88591            Latin1
